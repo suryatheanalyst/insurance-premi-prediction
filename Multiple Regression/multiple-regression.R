@@ -1,5 +1,5 @@
 # Importing Data
-data <- read.csv ("/Users/suryayehezki/Documents/Business Analytics UEBS/Principle Data Analytics/Group Coursework/Final Course Work/Report/Per 26 October/insurance.csv")
+data <- read.csv ("insurance.csv")
 data <- unique(data)
 data$expenses <- log(data$expenses)
 
@@ -44,10 +44,8 @@ dt = sort(sample(nrow(dat_transformed_without_outliers), nrow(dat_transformed_wi
 train<-dat_transformed_without_outliers[dt,]
 test<-dat_transformed_without_outliers[-dt,]
 
-
 model2 <- lm(expenses ~ ., data = train)
 summary(model2)
-
 
 # Histogram and Normal Q-Q
 library(ggplot2)
@@ -56,18 +54,15 @@ plot(model2, which=2)
 
 plot(model2, which=3)
 
+predict(model2, newdata = test)
 
-predict(model, newdata = test)
-
-
-plot_data <- data.frame(Predicted_value = predict(model, newdata = test),  
+plot_data <- data.frame(Predicted_value = predict(model2, newdata = test),  
                         Observed_value = test$expenses)
 
 # plot predicted values and actual values
 ggplot(plot_data, aes(x = Predicted_value, y = Observed_value)) +
   geom_point() +
   geom_abline(intercept = 0, slope = 1, color = "green")
-
 
 library(lmtest)
 dwtest(model2)
